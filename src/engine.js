@@ -31,8 +31,8 @@ export function total(hand) {
 function blackjack(hand) { return hand.cards.length === 2 && total(hand) === 21 && !hand.fromSplit; }
 
 export class BlackjackEngine {
-  constructor({ decks = 6, rng = Math.random, cutCard, initialBankroll = 1000 } = {}) {
-    this.decks = decks; this.rng = rng; this.totalCards = decks * 52;
+  constructor({ decks = 6, rng = Math.random, cutCard, opponentCount = 2, initialBankroll = 1000 } = {}) {
+    this.opponentCount = opponentCount === 0 ? 0 : 2; this.decks = decks; this.rng = rng; this.totalCards = decks * 52;
     this.cutCard = cutCard ?? Math.floor(this.totalCards * 0.25);
     this.initialBankroll = initialBankroll; this.bankroll = initialBankroll; this.netProfit = 0;
     this.round = 0; this.shoeNumber = 0; this.history = [];
@@ -67,7 +67,7 @@ export class BlackjackEngine {
     this.round++; this.phase = 'playing'; this.results = []; this.hands = [];
     this.visibleCountedCards = []; this.roundCards = []; this.roundBet = bet; this.committed = bet;
     const player = { id: 'player-0', cards: [], bet, stood: false, doubled: false, splitAces: false, outcome: null };
-    const opponents = [0, 1].map(i => ({ id: `seat-${i}`, cards: [], bet, stood: false, outcome: null }));
+    const opponents = Array.from({length:this.opponentCount}, (_,i)=>i).map(i => ({ id: `seat-${i}`, cards: [], bet, stood: false, outcome: null }));
     const dealer = { id: 'dealer', cards: [], outcome: null };
     // Deal one card to every seat, then repeat. Dealer's second card is hidden.
     const seats = [player, ...opponents, dealer];
