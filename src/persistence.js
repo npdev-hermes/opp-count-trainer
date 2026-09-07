@@ -1,4 +1,4 @@
-import { BlackjackEngine } from './engine.js';
+import { BlackjackEngine } from './engine.js?v=7';
 
 export const BANKROLL_KEY = 'opp-trainer-money-v2';
 export const SNAPSHOT_KEY = 'opp-trainer-active-v2';
