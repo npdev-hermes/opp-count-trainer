@@ -23,9 +23,9 @@ test('shoe size, configured cut threshold, and new shoe state are exact', () => 
   assert.equal(createShoe(2, () => 0.5).length, 104);
   const engine = new BlackjackEngine({ decks: 6, rng: () => 0.5, cutCard: 52 });
   assert.equal(engine.shoe.length, 312); assert.equal(engine.cutCard, 52);
-  assert.equal(engine.runningCount, 6); assert.equal(engine.shoeNumber, 1);
+  assert.equal(engine.runningCount, 0); assert.equal(engine.shoeNumber, 1);
   engine.newShoe();
-  assert.equal(engine.shoeNumber, 2); assert.equal(engine.runningCount, 6);
+  assert.equal(engine.shoeNumber, 2); assert.equal(engine.runningCount, 0);
   assert.equal(engine.phase, 'ready'); assert.deepEqual(engine.hands, []);
 });
 
@@ -36,11 +36,11 @@ test('round-robin deal leaves hole card uncounted and RC unchanged until round e
   assert.deepEqual(e.player.cards.map(c => c.rank), ['9','7']);
   assert.deepEqual(e.opponents.map(h => h.cards.map(c => c.rank)), [['5','5'], ['6','6']]);
   assert.deepEqual(e.dealer.cards.map(c => c.rank), ['T','9']);
-  assert.equal(e.runningCount, 6); assert.equal(e.visibleCountedCards.length, 7);
+  assert.equal(e.runningCount, 0); assert.equal(e.visibleCountedCards.length, 7);
   assert.equal(e.dealer.cards[1].hidden, true);
   e.stand();
   assert.equal(e.phase, 'round-complete');
-  assert.equal(e.runningCount, 6);
+  assert.equal(e.runningCount, 0);
 });
 
 test('US peek ends on dealer natural and natural-vs-natural is a push', () => {
@@ -87,8 +87,11 @@ test('double and split require bankroll, DAS is allowed, max four and aces get o
   assert.equal(aces.canSplit(), false);
 });
 
-test('normalized TC uses (RC - 6) and exact decks remaining', () => {
-  assert.equal(normalizedTC(10, 2), 2); assert.equal(normalizedTC(9, 0), null);
+test('normalized TC divides zero-start RC and rounds whole numbers symmetrically', () => {
+  assert.equal(normalizedTC(5, 2), 3); assert.equal(normalizedTC(-5, 2), -3);
+  assert.equal(normalizedTC(1, 2), 1); assert.equal(normalizedTC(-1, 2), -1);
+  assert.equal(Object.is(normalizedTC(-0.1, 2), -0), false);
+  assert.equal(normalizedTC(9, 0), null);
   assert.equal(total([{ rank: 'A' }, { rank: '9' }, { rank: '5' }]), 15);
 });
 

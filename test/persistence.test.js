@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { BlackjackEngine } from '../src/engine.js';
-import { loadBankroll, saveBankroll, saveSnapshot, loadSnapshot, clearSnapshot } from '../src/persistence.js';
+import { loadBankroll, saveBankroll, saveSnapshot, loadSnapshot, clearSnapshot, SNAPSHOT_KEY } from '../src/persistence.js';
 
 function memoryStorage() {
   const data = new Map();
@@ -45,4 +45,34 @@ test('settlement remains one-time after a round is saved and loaded', () => {
   restored.resolveRound();
   assert.equal(restored.bankroll, settled);
   assert.equal(restored.netProfit, engine.netProfit);
+});
+
+test('untagged active snapshots migrate legacy +6 RC without changing money or hand', () => {
+  const engine = new BlackjackEngine({ decks: 2, initialBankroll: 777 });
+  rigNonNatural(engine); engine.startRound(25);
+  engine.runningCount = 8;
+  engine.history = [{ round: 1, rc: 11, results: [] }];
+  const storage = memoryStorage();
+  const legacyState = JSON.parse(JSON.stringify(engine)); delete legacyState.countConvention;
+  storage.setItem(SNAPSHOT_KEY, JSON.stringify({ version: 2, engine: { decks: 2, initialBankroll: 777, state: legacyState }, graded: false, quizTarget: { rc: 8, tc: 4 }, stats: { asked: 2, correct: 2, history: [] } }));
+  const restored = loadSnapshot(storage);
+  assert.equal(restored.engine.runningCount, 2);
+  assert.equal(restored.engine.history[0].rc, 5);
+  assert.equal(restored.engine.bankroll, 777);
+  assert.equal(restored.engine.committed, 25);
+  assert.equal(restored.quizTarget, null);
+  assert.equal(restored.graded, false);
+  assert.equal(restored.engine.countConvention, 'zero-v1');
+});
+
+test('migrating an already graded completed round does not re-grade its stats', () => {
+  const engine = new BlackjackEngine({ decks: 1 });
+  engine.phase = 'round-complete'; engine.runningCount = 7; engine.history = [{ round: 1, rc: 7, results: [] }];
+  const state = JSON.parse(JSON.stringify(engine)); delete state.countConvention;
+  const storage = memoryStorage();
+  storage.setItem(SNAPSHOT_KEY, JSON.stringify({ version: 2, engine: { decks: 1, state }, graded: true, quizTarget: { rc: 7, tc: 2 }, stats: { asked: 2, correct: 1, history: [{ round: 1 }] } }));
+  const restored = loadSnapshot(storage);
+  assert.equal(restored.graded, true);
+  assert.equal(restored.quizTarget, null);
+  assert.deepEqual(restored.stats, { asked: 2, correct: 1, history: [{ round: 1 }] });
 });

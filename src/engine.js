@@ -5,7 +5,10 @@ const LOW = new Set(['2','3','4','5','6']);
 export function cardValue(rank) { return LOW.has(rank) ? 1 : 0; }
 export function oppDelta(ranks) { return ranks.reduce((sum, rank) => sum + cardValue(rank), 0) - 1; }
 export function normalizedTC(runningCount, decksRemaining) {
-  return decksRemaining > 0 ? Number(((runningCount - 6) / decksRemaining).toFixed(1)) : null;
+  if (!(decksRemaining > 0)) return null;
+  const value = runningCount / decksRemaining;
+  const rounded = Math.sign(value) * Math.floor(Math.abs(value) + 0.5);
+  return Object.is(rounded, -0) ? 0 : rounded;
 }
 export function createShoe(decks = 6, rng = Math.random) {
   const cards = [];
@@ -35,12 +38,13 @@ export class BlackjackEngine {
     this.opponentCount = opponentCount === 0 ? 0 : 2; this.decks = decks; this.rng = rng; this.totalCards = decks * 52;
     this.cutCard = cutCard ?? Math.floor(this.totalCards * 0.25);
     this.initialBankroll = initialBankroll; this.bankroll = initialBankroll; this.netProfit = 0;
+    this.countConvention = 'zero-v1';
     this.round = 0; this.shoeNumber = 0; this.history = [];
     this.newShoe();
   }
   newShoe() {
     this.shoe = createShoe(this.decks, this.rng); this.discard = [];
-    this.runningCount = 6; this.cutReached = false; this.phase = 'ready';
+    this.runningCount = 0; this.cutReached = false; this.phase = 'ready';
     this.hands = []; this.opponents = []; this.dealer = null; this.results = [];
     this.visibleCountedCards = []; this.roundCards = []; this.roundBet = 0; this.committed = 0;
     this.shoeNumber++;
