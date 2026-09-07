@@ -4,7 +4,7 @@ Play: https://npdev-hermes.github.io/opp-count-trainer/
 
 A static, mobile-responsive practice table with hit, stand, double, split, two automated seats, a dealer, adjustable fun-chip bets, and continuous 2/6/8-deck shoes. Quiz results, bankroll, settled-round ledger, and the active shoe/round snapshot are saved locally across refreshes. No accounts, real money, or backend.
 
-The table uses a pinned, self-hosted Three.js 0.160.0 CSS3DRenderer for card dealing and hole-card flip animation, with reduced-motion support and an accessible DOM card layer.
+OPP Studio uses a compact cream-bankroll header, green table, readable permanent cards, and a responsive practice sidebar. The table uses pinned, self-hosted Three.js 0.160.0 CSS3DRenderer transient deal/flip animations with reduced-motion support. Permanent card rows remain opaque after animations complete. Browser regression checks cover ancestor opacity and screenshot card pixels, split/double, complete rounds, and reload recovery.
 
 ## Counting convention
 Based on Carlos Zilzer's [Easy OPP Count](https://www.lasvegasadvisor.com/gambling-with-an-edge/the-easy-opp-count-a-new-approach-to-card-counting/), introduced by Arnold Snyder. OPP means **One Per Person**. Start at +6. Every final hand contributes number of 2–6 cards minus one, including the dealer. Split hands replace the original hand. All other ranks have zero card contribution.
