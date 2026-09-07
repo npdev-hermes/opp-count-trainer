@@ -4,12 +4,12 @@ Play: https://npdev-hermes.github.io/opp-count-trainer/
 
 A static, mobile-responsive practice table with hit, stand, double, split, two automated seats, a dealer, adjustable fun-chip bets, and continuous 2/6/8-deck shoes. Quiz results, bankroll, settled-round ledger, and the active shoe/round snapshot are saved locally across refreshes. No accounts, real money, or backend.
 
-OPP Studio uses a compact cream-bankroll header, green table, readable permanent cards, and a responsive practice sidebar. The table uses pinned, self-hosted Three.js 0.160.0 CSS3DRenderer transient deal/flip animations with reduced-motion support. Permanent card rows remain opaque after animations complete. Browser regression checks cover ancestor opacity and screenshot card pixels, split/double, complete rounds, and reload recovery.
+OPP Studio uses a table-first casino layout inspired by blackjacktrainer.fyi/trainer, with a full-width green felt table, quick-bet chips, bankroll beneath gameplay, and collapsible reference/history panels. The table uses pinned, self-hosted Three.js 0.160.0 CSS3DRenderer transient deal/flip animations with reduced-motion support. Permanent card rows remain opaque after animations complete. Browser regression checks cover ancestor opacity and screenshot card pixels, split/double, complete rounds, and reload recovery.
 
 ## Counting convention
 Based on Carlos Zilzer's [Easy OPP Count](https://www.lasvegasadvisor.com/gambling-with-an-edge/the-easy-opp-count-a-new-approach-to-card-counting/), introduced by Arnold Snyder. OPP means **One Per Person**. Start at +6. Every final hand contributes number of 2–6 cards minus one, including the dealer. Split hands replace the original hand. All other ranks have zero card contribution.
 
-**OPP is running-count-only.** The extra true-count-style quiz uses `(running count - 6) / (cards remaining / 52)`, rounded to one decimal. This is a custom normalization drill, NOT an official OPP true count, NOT Hi-Lo, and NOT a validated betting signal. Answers are hidden until submission. Both entries are required; each round is graded once.
+**OPP is running-count-only.** The extra true-count-style quiz uses `(running count - 6) / (cards remaining / 52)`, rounded to one decimal. This is a custom normalization drill, NOT an official OPP true count, NOT Hi-Lo, and NOT a validated betting signal. Answers are hidden until submission. Both entries are required; each round is graded once. Each count receives explicit correct/incorrect feedback with submitted and expected values. Numeric inputs accept signed values; the normalized-count field also offers Negative/Positive buttons for mobile keyboards.
 
 ## Table rules and deliberate simplifications
 - S17, US dealer peek, natural blackjack pays 3:2, natural versus natural pushes.

@@ -1,23 +1,44 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#102420"><title>OPP Studio · Blackjack practice</title><link rel="stylesheet" href="styles.css?v=4"></head>
-<body><main class="shell">
-<header class="topbar"><a class="brand" href="./"><span class="brand-mark">♠</span><span><span class="eyebrow">ONE PER PERSON</span><h1>OPP Studio<span class="version">03</span></h1></span></a><div class="top-actions"><label class="select-label">SHOE<select id="deck-select" aria-label="Number of decks"><option value="2">2 decks</option><option value="6" selected>6 decks</option><option value="8">8 decks</option></select></label><button id="new-shoe" class="ghost">Shuffle</button></div></header>
-<section class="money-strip" aria-label="Practice money"><div class="balance-main"><span>PRACTICE BANKROLL</span><strong id="bankroll">1,000 chips</strong></div><div><span>SESSION P/L</span><strong id="session-profit">0 chips</strong></div><div><span>LAST HAND</span><strong id="last-round-net">—</strong></div></section>
-<div class="game-grid"><div class="play-column">
-<section class="stats" aria-label="Counting practice status"><div><span>RUNNING COUNT</span><strong id="rc">+6</strong></div><div><span>REMAINING</span><strong id="cards-left">—</strong></div><div><span>ROUND</span><strong id="round">0</strong></div><div><span>ACCURACY</span><strong id="accuracy">—</strong></div></section>
-<div class="shoe-strip"><span id="shoe-detail"></span><progress id="shoe-progress" value="0" max="312" aria-label="Shoe penetration"></progress></div>
-<section id="table" class="felt" aria-label="Blackjack table"><div class="table-label"><span><i class="live-dot"></i> PRACTICE TABLE</span><span id="phase">READY</span></div>
-<div class="dealer-zone"><div class="seat-title">DEALER <span>STANDS ON SOFT 17</span></div><div id="dealer-hand" class="hand"></div></div>
-<div class="table-stamp" aria-hidden="true">BLACKJACK PAYS 3:2 <span>•</span> COUNT EVERY FINAL HAND</div>
-<div id="seats" class="seats"></div>
-<div class="player-zone"><div class="seat-title">YOUR HAND <span>PLAY · COUNT · REPEAT</span></div><div id="player-hands"></div></div>
-<p id="message" class="message" role="status">Start at +6. Deal a round to begin.</p></section>
-<div class="action-dock"><div class="bet-row"><label for="bet">YOUR BET <input id="bet" type="number" min="1" step="1" value="10" inputmode="numeric"><span>chips</span></label><span id="available-money">Available <b id="available-value">1,000</b></span></div><div id="controls" class="controls"><button id="deal" class="primary">Deal round</button></div></div>
-<section id="quiz" class="quiz hidden"><div class="quiz-heading"><span class="eyebrow">COUNT CHECK</span><h2>Before the next deal.</h2><p>Count all final hands, including the dealer. The cards stay on the table while you work.</p></div><div class="quiz-grid"><label>RUNNING COUNT<input id="rc-answer" type="number" step="1" inputmode="decimal" placeholder="e.g. 4" autocomplete="off"></label><label>NORMALIZED COUNT<input id="tc-answer" type="number" step="0.1" inputmode="decimal" placeholder="e.g. -0.3" autocomplete="off"><span class="sign-controls"><button type="button" id="tc-negative" aria-label="Make normalized count negative">− Negative</button><button type="button" id="tc-positive" aria-label="Make normalized count positive">+ Positive</button></span></label></div><p class="formula">Extra exercise: <code>(RC − 6) ÷ decks remaining</code>. Round to one decimal. OPP itself does not use a true count.</p><p id="quiz-decks" class="muted"></p><button id="check-quiz" class="primary">Check my counts</button><div id="quiz-result" role="status" aria-live="polite"></div></section>
-</div><aside class="side-column">
-<article class="panel guide"><div class="panel-title"><h2>Keep it simple.</h2><span class="pill">OPP</span></div><div class="rule-equation"><span>2–6</span><b>+1</b><small>for each low card</small></div><div class="rule-equation"><span>Each hand</span><b>−1</b><small>including split hands &amp; dealer</small></div><p>Start every shoe at <b>+6</b>. Count only the low cards, then subtract one per final hand. All other ranks contribute zero.</p><p class="muted">The normalized-count question is an extra math drill—not an official OPP true count or a betting signal.</p><a href="https://www.lasvegasadvisor.com/gambling-with-an-edge/the-easy-opp-count-a-new-approach-to-card-counting/" target="_blank" rel="noreferrer">Carlos Zilzer’s original method ↗</a></article>
-<article class="panel"><div class="panel-title"><h2>Your money</h2><span class="pill">SAVED LOCALLY</span></div><div id="money-history" class="history"></div><button id="new-session" class="text-button">Reset practice session</button></article>
-<article class="panel"><div class="panel-title"><h2>Count history</h2><button id="clear-history" class="text-button">Clear</button></div><div id="history" class="history"></div></article>
-</aside></div>
-<footer><details><summary>Table rules &amp; practice notes</summary><p>S17 · US peek · 3:2 natural blackjack · double after split · up to four player hands. Split equal ranks only; split aces get one card and cannot re-split. Split 21 is not blackjack. No insurance, surrender, or burn card. Two automatic players hit until 17, without splitting or doubling; they do not use optimal basic strategy. Dealer completes its hand for counting practice even if everyone busts. Cut at 75% dealt; a conservative safety reserve may cause an earlier shuffle between rounds. Shuffling mid-hand voids that practice round and returns the stake. Your hand, shoe, balance, and history are saved on this device. Practice chips only; no guarantee of real-world profit.</p></details><span class="footer-note">A quiet place to get your count right. • OPP STUDIO</span></footer>
-</main><div id="three-table" class="three-table" data-renderer="three-css3d" aria-hidden="true"></div><script type="module" src="app.js?v=4"></script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#151817"><title>OPP Studio · Blackjack practice</title>
+  <link rel="stylesheet" href="styles.css?v=5">
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="OPP Studio home"><span class="brand-mark">♠</span><span><span class="eyebrow">ONE PER PERSON</span><h1>OPP <em>Studio</em><span class="version">05</span></h1></span></a>
+    <nav class="top-actions" aria-label="Practice settings"><span class="nav-status"><i class="live-dot"></i> LIVE PRACTICE</span><label class="select-label">SHOE <select id="deck-select" aria-label="Number of decks"><option value="2">2 decks</option><option value="6" selected>6 decks</option><option value="8">8 decks</option></select></label><button id="new-shoe" class="ghost">Shuffle</button></nav>
+  </header>
+
+  <div class="game-grid">
+    <div class="play-column">
+      <section class="stats" aria-label="Counting practice status"><div><span>RUNNING COUNT</span><strong id="rc">+6</strong></div><div><span>REMAINING</span><strong id="cards-left">—</strong></div><div><span>ROUND</span><strong id="round">0</strong></div><div><span>ACCURACY</span><strong id="accuracy">—</strong></div></section>
+      <div class="shoe-strip"><span id="shoe-detail"></span><progress id="shoe-progress" value="0" max="312" aria-label="Shoe penetration"></progress></div>
+
+      <section id="table" class="felt" aria-label="Blackjack table">
+        <div class="table-label"><span><i class="live-dot"></i> OPP TABLE · S17</span><span id="phase">READY</span></div>
+        <div class="table-rail"><span>BLACKJACK PAYS 3:2</span><span>COUNT EVERY FINAL HAND</span><span>DEALER STANDS SOFT 17</span></div>
+        <div class="dealer-zone"><div class="seat-title">DEALER <span>HOUSE HAND</span></div><div id="dealer-hand" class="hand"></div></div>
+        <div class="table-center-mark" aria-hidden="true"><span>♣</span><b>COUNT</b><small>LOW CARDS +1</small></div>
+        <div id="seats" class="seats"></div>
+        <div class="player-zone"><div class="seat-title">YOUR HAND <span>PLAY · COUNT · REPEAT</span></div><div id="player-hands"></div></div>
+        <p id="message" class="message" role="status">Start at +6. Deal a round to begin.</p>
+      </section>
+
+      <section class="action-dock" aria-label="Bet and play controls"><div class="bet-row"><label for="bet">YOUR BET <span class="input-wrap"><input id="bet" type="number" min="1" step="1" value="10" inputmode="numeric"><b>chips</b></span></label><span id="available-money">Available <b id="available-value">1,000</b></span></div><div class="chip-row" aria-label="Bet denominations"><span class="chip-label">QUICK BET</span><button type="button" class="chip chip-white" data-bet="5">5</button><button type="button" class="chip chip-red" data-bet="25">25</button><button type="button" class="chip chip-blue" data-bet="50">50</button><button type="button" class="chip chip-black" data-bet="100">100</button><button type="button" class="chip chip-gold" data-bet="500">500</button></div><div id="controls" class="controls"><button id="deal" class="primary">Deal round <kbd>↵</kbd></button></div></section>
+
+      <section class="money-strip" aria-label="Practice money"><div class="balance-main"><span>PRACTICE BANKROLL</span><strong id="bankroll">1,000 chips</strong></div><div><span>SESSION P/L</span><strong id="session-profit">0 chips</strong></div><div><span>LAST HAND</span><strong id="last-round-net">—</strong></div></section>
+      <section id="quiz" class="quiz hidden"><div class="quiz-heading"><span class="eyebrow">COUNT CHECK</span><h2>Close the hand. Prove the count.</h2><p>Count all final hands, including the dealer. The cards stay on the table while you work.</p></div><div class="quiz-grid"><label>RUNNING COUNT<input id="rc-answer" type="number" step="1" inputmode="decimal" placeholder="e.g. 4" autocomplete="off"></label><label>NORMALIZED COUNT<input id="tc-answer" type="number" step="0.1" inputmode="decimal" placeholder="e.g. -0.3" autocomplete="off"><span class="sign-controls"><button type="button" id="tc-negative" aria-label="Make normalized count negative">− Negative</button><button type="button" id="tc-positive" aria-label="Make normalized count positive">+ Positive</button></span></label></div><p class="formula">Extra exercise: <code>(RC − 6) ÷ decks remaining</code>. Round to one decimal. OPP itself does not use a true count.</p><p id="quiz-decks" class="muted"></p><button id="check-quiz" class="primary">Check my counts</button><div id="quiz-result" role="status" aria-live="polite"></div></section>
+    </div>
+
+    <aside class="side-column" aria-label="Practice reference and records">
+      <details class="panel guide"><summary>Table rules</summary><div class="detail-content"><span class="pill">OPP</span><div class="rule-equation"><span>2–6</span><b>+1</b><small>low card</small></div><div class="rule-equation"><span>Each hand</span><b>−1</b><small>final hand</small></div><p>Start every shoe at <b>+6</b>. Count only the low cards, then subtract one per final hand. All other ranks contribute zero.</p><a href="https://www.lasvegasadvisor.com/gambling-with-an-edge/the-easy-opp-count-a-new-approach-to-card-counting/" target="_blank" rel="noreferrer">Carlos Zilzer’s original method ↗</a></div></details>
+      <details class="panel"><summary>Your money</summary><div class="detail-content"><span class="pill">SAVED LOCALLY</span><div id="money-history" class="history"></div><button id="new-session" class="text-button">Reset practice session</button></div></details>
+      <details class="panel"><summary>Count history</summary><div class="detail-content"><button id="clear-history" class="text-button">Clear</button><div id="history" class="history"></div></div></details>
+    </aside>
+  </div>
+  <footer><details><summary>Table rules &amp; practice notes</summary><p>S17 · US peek · 3:2 natural blackjack · double after split · up to four player hands. Split equal ranks only; split aces get one card and cannot re-split. Split 21 is not blackjack. No insurance, surrender, or burn card. Two automatic players hit until 17, without splitting or doubling; they do not use optimal basic strategy. Dealer completes its hand for counting practice even if everyone busts. Cut at 75% dealt; a conservative safety reserve may cause an earlier shuffle between rounds. Shuffling mid-hand voids that practice round and returns the stake. Your hand, shoe, balance, and history are saved on this device. Practice chips only; no guarantee of real-world profit.</p></details><span class="footer-note">A quiet place to get your count right. · OPP STUDIO</span></footer>
+</main><div id="three-table" class="three-table" data-renderer="three-css3d" aria-hidden="true"></div><script type="module" src="app.js?v=5"></script>
+</body></html>
